@@ -22,7 +22,6 @@ body * {
 
 body {
   color: ${color.darkText};
-  background: ${color.primaryColor};
   font-family: ${fontStyles.defaultFont}  
 }
 
@@ -65,10 +64,6 @@ img {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-a.activeSelection {
-  color: ${color.secondaryBgShading};
 }
 
 `
