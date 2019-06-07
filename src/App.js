@@ -1,10 +1,12 @@
 import React from 'react';
 import AppContainer from './components/DesignComponents/AppStyles'
 
+import UserList from './components/UserComponents/UserList'
+
 const App = () => {
   return (
     <AppContainer>
-      <h2>User List</h2>
+      <UserList />
     </AppContainer>
   )
 }
