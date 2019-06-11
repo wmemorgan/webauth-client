@@ -1,53 +1,33 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React from 'react'
+// import { Link } from 'react-router-dom'
+import Loader from 'react-loader-spinner'
+import * as S from './UserStyles'
 
-class UserList extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      status: null,
-      userList: [],
-      errorMessage: ''
-    }
-  }
 
-  getData = async () => {
-    try {
-      let data = await axios.get('http://192.168.254.5:5000/api/users')
-      console.log(`data is: `, data.data)
-      this.setState({
-        status: data.status, 
-        userList: data.data 
-      })
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({ 
-        status: err.status,
-        errorMessage: err.response.data.message 
-      })
-    }
-  }
-
-  componentDidMount() {
-    this.getData()
-  }
-
-  render() {
-    return (
-      <>
-        <h2>User List</h2>
-        {this.state.status === 200 ?
-          this.state.userList.map(user => (
-            <div key={user.id}>
+const UserList = props => {
+  console.log(`UserList props: `, props)
+  return (
+    <S.UserListContainer>
+      <h2>User List</h2>
+      {props.status === 200 ?
+        (props.userList.length > 0 ? (props.userList.map(user => (
+          <S.Preview key={user.id}>
+            <div>
               {user.username}
             </div>
+            <div>
+              id: {user.id}
+            </div>
+          </S.Preview>))) : (
+          <S.SpinnerContainer>
+            <h2>Loading...</h2>
+            <Loader type="Puff" color='#265077' height='60' width='60' />
+          </S.SpinnerContainer>
           )) :
-          <div>{this.state.errorMessage}</div>
-        }
-      </>
-    )
-  }
+        <div>{props.errorMessage}</div>
+      }
+    </S.UserListContainer>
+  )
 }
 
 export default UserList

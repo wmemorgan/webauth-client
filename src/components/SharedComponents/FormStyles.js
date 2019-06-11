@@ -6,7 +6,9 @@ export const FormContainer = styled.div`
   ${flex('column', 'center', 'center')};
   margin: 20px 0;
   border-radius: 5px;
-  box-shadow:  10px 10px 5px 0px rgba(0,0,0,0.75);
+  border: 1px solid ${colorScheme.secondaryBorderColor}
+  border-radius: 5px;
+  box-shadow: 0 8px 6px -6px rgba(0,0,0,0.75);
   background: ${color.lightText};
   font-size: ${fontSizing.sm};
 
@@ -44,13 +46,16 @@ export const FormContainer = styled.div`
     input {
       width: 100%;
       padding: 2px 10px;
-      border: 1px solid ${colorScheme.defaultBorderColor};
-      background: ${color.primaryBgShading};     
+      border: 1px solid ${color.defaultBorderColor};
+      border-radius: 5px;
+      background: ${color.primaryBgShading};
       line-height: 1.5rem;
     }
 
     button {
       width: 150px;
+      color: ${color.lightText};
+      background: ${color.primaryColor};
     }
   }
 `

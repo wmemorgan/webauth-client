@@ -6,6 +6,7 @@ const theme = {
     secondaryColor: '#e4e5eb',
     secondaryBgShading: '#C5CAE9',
     accent: '#51A7F8',
+    grayShade: '#d6d6d6',
     emphasis: '#212121',
     darkText: '#595959',
     lightText: '#FFFFFF',
@@ -23,7 +24,8 @@ const theme = {
     defaultLinkColor: () => { return theme.color.secondaryColor },
     containerBgColor: () => { return theme.primaryBgShading },
     cardBgColor: () => { return theme.secondaryBgShading },
-    defaultBorderColor: () => { return theme.color.primaryDark }
+    defaultBorderColor: () => { return theme.color.primaryDark },
+    secondaryBorderColor: () => { return theme.color.grayShade }
   },
 
   fontStyles: {
