@@ -3,13 +3,11 @@ import React from 'react'
 import Loader from 'react-loader-spinner'
 import * as S from './UserStyles'
 
-
 const UserList = props => {
-  console.log(`UserList props: `, props)
   return (
     <S.UserListContainer>
       <h2>User List</h2>
-      {props.status === 200 ?
+      {props.errorMessage ? props.errorMessage :
         (props.userList.length > 0 ? (props.userList.map(user => (
           <S.Preview key={user.id}>
             <div>
@@ -23,8 +21,7 @@ const UserList = props => {
             <h2>Loading...</h2>
             <Loader type="Puff" color='#265077' height='60' width='60' />
           </S.SpinnerContainer>
-          )) :
-        <div>{props.errorMessage}</div>
+        ))
       }
     </S.UserListContainer>
   )
