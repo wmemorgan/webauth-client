@@ -36,8 +36,12 @@ class Form extends Component {
       console.log(`Successful login: `, data)
       this.setState({ 
         status: data.status,
-        greeting: data.data.message 
-      })
+        greeting: data.data.message,
+        errorMessage: '' 
+      },
+        () => this.props.history.push('/') /** React-Router only **/
+      )
+      
     }
     catch (err) {
       console.error(err.response)
@@ -46,7 +50,6 @@ class Form extends Component {
         errorMessage: err.response.data.message 
       })
     }
-    //this.props.history.push('/') /** React-Router only **/
 
     // reset form fields
     this.setState({
@@ -90,7 +93,8 @@ class Form extends Component {
     this.setState({
       id: '',
       username: '',
-      password: ''
+      password: '',
+
     })
   }
 
@@ -162,6 +166,7 @@ class Form extends Component {
             `}
           </Button>
         </form>
+        {this.state.errorMessage ? this.state.errorMessage : ''}
       </FormContainer>
     )
   }
