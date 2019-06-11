@@ -6,6 +6,8 @@ import Button from '../DesignComponents/Button'
 
 //import {  } from '../../actions' /** Redux only **/
 
+const API_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}`
+
 class Form extends Component {
   _isMounted = false;
   state = {
@@ -33,7 +35,7 @@ class Form extends Component {
 
     // send new record to api
     try {
-      let data = await axios.post('http://192.168.254.5:5000/api/auth/login', credentials)
+      let data = await axios.post(`${API_ENDPOINT}/api/auth/login`, credentials)
       console.log(`Successful login: `, data)
       this.setState({ 
         status: data.status,
