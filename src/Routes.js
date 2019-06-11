@@ -5,6 +5,8 @@ import axios from 'axios'
 import Login from './components/SharedComponents/Login'
 import UserList from './components/UserComponents/UserList'
 
+const API_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}`
+
 class Routes extends Component { 
   constructor(props) {
     super(props)
@@ -17,7 +19,7 @@ class Routes extends Component {
 
   getData = async () => {
     try {
-      let data = await axios.get('http://192.168.254.5:5000/api/users')
+      let data = await axios.get(`${API_ENDPOINT}/api/users`)
       console.log(`data is: `, data.data)
       this.setState({
         status: data.status,

@@ -13,7 +13,7 @@
     "styled-normalize": "^8.0.6"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_API_ENDPOINT='http://192.168.254.5:5000' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
