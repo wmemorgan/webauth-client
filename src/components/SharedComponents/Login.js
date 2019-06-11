@@ -7,6 +7,7 @@ import Button from '../DesignComponents/Button'
 //import {  } from '../../actions' /** Redux only **/
 
 class Form extends Component {
+  _isMounted = false;
   state = {
     id: '',
     username: '',
@@ -38,10 +39,7 @@ class Form extends Component {
         status: data.status,
         greeting: data.data.message,
         errorMessage: '' 
-      },
-        () => this.props.history.push('/') /** React-Router only **/
-      )
-      
+      })
     }
     catch (err) {
       console.error(err.response)
@@ -56,6 +54,8 @@ class Form extends Component {
       username: '',
       password: ''
     })
+
+    this.props.history.push('/')
   }
 
   // pre-populate form with existing data 
@@ -129,11 +129,11 @@ class Form extends Component {
     }
   }
 
-  componentDidMount() {
-    if(this.props.update) {
-      this.prePopulateForm(this.props.id)
-    }
-  }
+  // componentDidMount() {
+  //   if(this.props.update) {
+  //     this.prePopulateForm(this.props.id)
+  //   }
+  // }
 
   render() {
     return (
