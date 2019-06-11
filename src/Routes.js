@@ -20,7 +20,6 @@ class Routes extends Component {
   getData = async () => {
     try {
       let data = await axios.get(`${API_ENDPOINT}/api/users`)
-      console.log(`data is: `, data.data)
       this.setState({
         status: data.status,
         userList: data.data
