@@ -35,8 +35,8 @@ class Form extends Component {
 
     // send new record to api
     try {
-      let data = await axios.post(`${API_ENDPOINT}/api/auth/login`, credentials)
-      console.log(`Successful login: `, data)
+      let data = await axios.post(`${API_ENDPOINT}/api/auth/login`, credentials, { withCredentials: true })
+      console.log(`Successful login: `, data.headers)
       this.setState({ 
         status: data.status,
         greeting: data.data.message,
