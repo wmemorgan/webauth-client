@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 
 import * as S from './HeaderStyles'
 import MobileMenuIcon from '../DesignComponents/MobileMenuIcon'
@@ -9,6 +9,11 @@ class Header extends Component {
   constructor(props) {
     super(props)
     this.state = { show: false }
+  }
+
+  logout = () => {
+    localStorage.removeItem('jwt')
+    this.props.history.push('/signin')
   }
 
   // Open and close specific navigation elements
@@ -21,6 +26,8 @@ class Header extends Component {
   }
 
   render() {
+    const token = localStorage.getItem('jwt')
+
     return (
       <S.HeaderContainer>
         <MobileMenuIcon
@@ -36,13 +43,16 @@ class Header extends Component {
           <i className="fa fa-times" aria-hidden="true"></i>
         </CloseIconMobile>
         <S.Nav {...this.state}>
-          <NavLink exact to='/' onClick={this.toggleDisplay}>
+          <NavLink exact to='/users' onClick={this.toggleDisplay}>
             Home
         </NavLink>
         <S.CrudNav>
-          <NavLink to='/signin' onClick={this.toggleDisplay}>
-            Sign In
-          </NavLink>
+          {!token ?
+            <NavLink to='/signin' onClick={this.toggleDisplay}>
+              Sign In
+            </NavLink> :
+            <div className="logout" onClick={this.logout}>Log Out</div>
+          }
           <NavLink to='/signup' onClick={this.toggleDisplay}>
             Sign Up
           </NavLink>
@@ -53,4 +63,4 @@ class Header extends Component {
   }
 }
 
-export default Header
+export default withRouter(Header)

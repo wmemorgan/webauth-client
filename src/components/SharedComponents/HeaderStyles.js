@@ -13,7 +13,11 @@ export const HeaderContainer = styled.header`
   box-shadow: 0 5px 3px -3px rgba(0,0,0,0.35);
   background: ${colorScheme.headerBgColor};
 
-  & a * {
+  .logout {
+    cursor: pointer;
+  }
+
+  & a, .logout * {
     font-family: ${fontStyles.headingFont};
   }
   
@@ -22,7 +26,7 @@ export const HeaderContainer = styled.header`
     font-size: ${fontSizing.xs};
     
 
-    & a {
+    & a, .logout {
       padding: 8px;
       border-radius: 5px;
       text-transform: uppercase;
@@ -31,12 +35,12 @@ export const HeaderContainer = styled.header`
       letter-spacing: 0.1rem;
     }
 
-    & a.active {
+    & a.active, .logout:active {
       color: ${colorScheme.headerBgColor};
       background: ${colorScheme.headerFontColor};
     }
 
-    a:hover {
+    a:hover, .logout:hover {
       color: ${colorScheme.headerBgColor};
       background: ${colorScheme.headerFontColor};
     }
@@ -63,6 +67,8 @@ export const Nav = styled.nav`
   & * {
     text-decoration: none;
   }
+
+
 
   @media ${breakpoints[0]} {
     width: 50%;
