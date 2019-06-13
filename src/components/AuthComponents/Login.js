@@ -55,7 +55,7 @@ class Form extends Component {
       password: ''
     })
 
-    this.props.history.push('/')
+    this.props.history.push('/users')
   }
 
   // pre-populate form with existing data 

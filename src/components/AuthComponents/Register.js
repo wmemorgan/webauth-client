@@ -53,7 +53,7 @@ class Form extends Component {
       department: ''
     })
 
-    this.props.history.push('/') /** React-Router only **/
+    this.props.history.push('/users') /** React-Router only **/
   }
 
   submitHandler = e => {
