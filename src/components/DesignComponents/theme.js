@@ -16,7 +16,7 @@ const theme = {
   colorScheme: {
     logoColor: () => { return theme.color.emphasis },
     headerBgColor: () => { return theme.color.lightText },
-    headerFontColor: () => { return theme.color.accent },
+    headerFontColor: () => { return theme.color.primaryColor },
     footerBgColor: () => { return theme.color.primaryColor },
     footerFontColor: () => { return theme.color.lightText },
     headingColor: () => { return theme.color.primaryColor },

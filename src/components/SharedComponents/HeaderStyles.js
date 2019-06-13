@@ -1,14 +1,16 @@
 import styled from 'styled-components'
-import { colorScheme, fontSizing, fontStyles,
-  breakpoints, flex } from '../DesignComponents/theme'
+import {
+  colorScheme, fontSizing, fontStyles,
+  breakpoints, flex
+} from '../DesignComponents/theme'
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  ${flex('column','center')};
+  ${flex('column', 'center')};
   padding: 20px 10px;
   top: 0;
   z-index: 5;
-  box-shadow:  1px 1px 1px 0px rgba(89,89,89,1);
+  box-shadow: 0 5px 3px -3px rgba(0,0,0,0.35);
   background: ${colorScheme.headerBgColor};
 
   & a * {
@@ -17,7 +19,7 @@ export const HeaderContainer = styled.header`
   
   & * {
     color: ${colorScheme.headerFontColor};
-    font-size: ${fontSizing.m};
+    font-size: ${fontSizing.xs};
     
 
     & a {
@@ -25,7 +27,8 @@ export const HeaderContainer = styled.header`
       border-radius: 5px;
       text-transform: uppercase;
       font-family: ${fontStyles.headingFont};
-      letter-spacing: 0.2rem;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
     }
 
     & a.active {
@@ -34,7 +37,6 @@ export const HeaderContainer = styled.header`
     }
 
     a:hover {
-      text-decoration: underline;
       color: ${colorScheme.headerBgColor};
       background: ${colorScheme.headerFontColor};
     }
@@ -47,7 +49,7 @@ export const HeaderContainer = styled.header`
     padding-left: 5vw;
 
     & * {
-      font-size: ${fontSizing.s};
+      font-size: ${fontSizing.xxs};
     }
     
   }
@@ -57,14 +59,14 @@ export const HeaderContainer = styled.header`
 export const Nav = styled.nav`
   width: 90%;
   max-width: 600px;
-  ${flex('row','center','space-between')}
+  ${flex('row', 'center', 'space-between')}
   & * {
     text-decoration: none;
   }
 
   @media ${breakpoints[0]} {
     width: 50%;
-    display: ${props => props.show ? 'flex': 'none'};
+    display: ${props => props.show ? 'flex' : 'none'};
     flex-direction: column;
     align-items: center;
     justify-content: center;
