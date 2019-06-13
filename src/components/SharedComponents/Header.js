@@ -43,7 +43,7 @@ class Header extends Component {
           <i className="fa fa-times" aria-hidden="true"></i>
         </CloseIconMobile>
         <S.Nav {...this.state}>
-          <NavLink exact to='/users' onClick={this.toggleDisplay}>
+          <NavLink exact to='/' onClick={this.toggleDisplay}>
             Home
         </NavLink>
         <S.CrudNav>
