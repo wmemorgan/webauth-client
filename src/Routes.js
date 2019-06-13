@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom'
 import axios from 'axios'
 
 import Login from './components/AuthComponents/Login'
+import Register from './components/AuthComponents/Register'
 import UserList from './components/UserComponents/UserList'
 
 class Routes extends Component { 
@@ -40,7 +41,8 @@ class Routes extends Component {
   render() {
     return (
       <>
-        <Route path='/login' component={Login} />
+        <Route path='/signin' component={Login} />
+        <Route path='/signup' component={Register} />
         <Route 
           exact path='/'
           render={props => <UserList {...props} {...this.state} />}

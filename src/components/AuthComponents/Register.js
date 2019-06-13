@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios' /** External API calls only **/
 //import { connect } from 'react-redux' /** Redux only **/
-import { FormContainer } from './FormStyles'
+import { FormContainer } from '../SharedComponents/FormStyles'
 import Button from '../DesignComponents/Button'
 
 //import {  } from '../../actions' /** Redux only **/
@@ -49,65 +49,6 @@ class Form extends Component {
       username: '',
       password: ''
     })
-  }
-
-  // pre-populate form with existing data 
-  prePopulateForm = () => {
-    
-  }
-
-  updateData = async e => {
-    // prevent default
-    e.preventDefault()
-    // gather form data
-    let updatedRecord = {
-      id: this.state.id,
-      username: this.state.username,
-      password: this.state.password
-    }
-
-    try {
-      let data = await axios.put(`http://192.168.254.5:5000/api/users/${this.state.id}`, updatedRecord)
-      console.log(`Form submitted data sent: ${JSON.stringify(updatedRecord)}`)
-      this.setState({ status: data.status })
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({
-        status: err.status,
-        errorMessage: err.response.data.message
-      })
-    }
-    //this.props.history.push(`/somelist/${this.state.id}`) /** React-Router only **/
-
-    console.log(`Form submitted data sent: ${JSON.stringify(this.state)}`)
-
-    // reset form fields
-    this.setState({
-      id: '',
-      username: '',
-      password: ''
-    })
-  }
-
-  deleteData = async e => {
-    // prevent default
-    e.preventDefault()
-    // invoke the deleteFriend method and pass id
-    try {
-      let data = await axios.delete(`http://192.168.254.5:5000/api/users/${this.state.id}`)
-      this.setState({ status: data.status })
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({
-        status: err.status,
-        errorMessage: err.response.data.message
-      })
-    }
-    //this.props.history.push('/') /** React-Router only **/
-    // reset form field
-    this.setState({ id: '' })
   }
 
   submitHandler = e => {
