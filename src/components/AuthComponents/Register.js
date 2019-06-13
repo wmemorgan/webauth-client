@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios' /** External API calls only **/
 //import { connect } from 'react-redux' /** Redux only **/
+import { EventEmitter } from '../../utils/events'
+
 import * as S from '../SharedComponents/FormStyles'
 import Button from '../DesignComponents/Button'
 
@@ -52,7 +54,8 @@ class Form extends Component {
       password: '',
       department: ''
     })
-
+    
+    EventEmitter.dispatch('getData')
     this.props.history.push('/users') /** React-Router only **/
   }
 

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { Route, Redirect, withRouter } from 'react-router-dom'
 import axios from 'axios'
+import { EventEmitter } from './utils/events'
 
 import Login from './components/AuthComponents/Login'
 import Register from './components/AuthComponents/Register'
 import UserList from './components/UserComponents/UserList'
 
-const token = localStorage.getItem('jwt')
-console.log(`Is there a token: `, token)
 class Routes extends Component { 
   constructor(props) {
     super(props)
@@ -16,6 +15,7 @@ class Routes extends Component {
       userList: [],
       errorMessage: ''
     }
+    EventEmitter.subscribe('getData', event => this.getDataHandler(event))
   }
 
   getData = async () => {
@@ -37,9 +37,17 @@ class Routes extends Component {
     }
   }
 
-  componentDidMount() {
-    if (token && this.state.userList.length === 0) {
+  getDataHandler = () => {
+    const token = localStorage.getItem('jwt')
+    console.log(`Is there a token: `, token)
+    if (token) {
       this.getData()
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.userList.length === 0) {
+      this.getDataHandler()
     }
   }
 
@@ -50,7 +58,7 @@ class Routes extends Component {
         <Route path='/signup' component={Register} />
         <Route 
           exact path='/'
-          render={() => token ? <Redirect to={{ pathname: '/users', state: {...this.state} }}/> : <Redirect to='/signin'/>}
+          render={() => localStorage.getItem('jwt') ? <Redirect to={{ pathname: '/users', state: {...this.state} }}/> : <Redirect to='/signin'/>}
         />
         <Route 
           path='/users'
