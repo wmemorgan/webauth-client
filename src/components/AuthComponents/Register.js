@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios' /** External API calls only **/
 //import { connect } from 'react-redux' /** Redux only **/
-import { FormContainer } from '../SharedComponents/FormStyles'
+import * as S from '../SharedComponents/FormStyles'
 import Button from '../DesignComponents/Button'
 
 //import {  } from '../../actions' /** Redux only **/
@@ -11,12 +11,13 @@ class Form extends Component {
     id: '',
     username: '',
     password: '',
+    department: '',
     status: null,
     errorMesage: ''
   }
 
   handleInput = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.id]: e.target.value });
   }
 
   addData = async e => {
@@ -26,13 +27,15 @@ class Form extends Component {
     // gather form data
     let newRecord = {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
+      department: this.state.department
     }
 
     // send new record to api
     try {
       let endpoint = '/auth/register'
       let data = await axios.post(endpoint, newRecord)
+      localStorage.setItem('jwt', data.data.token)
       this.setState({ status: data.status })
     }
     catch (err) {
@@ -42,13 +45,15 @@ class Form extends Component {
         errorMessage: err.response.data.message 
       })
     }
-    //this.props.history.push('/') /** React-Router only **/
 
     // reset form fields
     this.setState({
       username: '',
-      password: ''
+      password: '',
+      department: ''
     })
+
+    this.props.history.push('/') /** React-Router only **/
   }
 
   submitHandler = e => {
@@ -70,7 +75,7 @@ class Form extends Component {
 
   render() {
     return (
-      <FormContainer {...this.props}>
+      <S.FormContainer {...this.props}>
         <div className="windowFrame"></div>
         <form onSubmit={this.submitHandler}>
           {(this.props.update || this.props.delete) &&
@@ -80,29 +85,29 @@ class Form extends Component {
             />
           }
           {!this.props.delete && (
-            <>
-              <input name="username" type="text"
+            <main>
+              <label htmlFor="username"/>  
+              <input id="username" type="text"
                 placeholder="Username" onChange={this.handleInput}
                 value={this.state.username}
               />
-              <input name="password" type="password"
+              <label htmlFor="password" />
+              <input id="password" type="password"
                 placeholder="Password" onChange={this.handleInput}
                 value={this.state.password}
               />
-            </>
+              <label htmlFor="department" />
+              <input id="department" type="text"
+                placeholder="Department" onChange={this.handleInput}
+                value={this.state.department}
+              />
+            </main>
           )}
-          <Button type="submit" {...this.props}>
-            {`${this.props.add ? 'Add' : ''} 
-              ${this.props.update ? 'Update' : ''}  
-              ${this.props.delete ? 'Delete' : ''}   
-              User
-            `}
-          </Button>
+          <Button type="submit" {...this.props}>Sign Up</Button>
         </form>
-      </FormContainer>
+      </S.FormContainer>
     )
   }
-
 }
 
 export default Form
