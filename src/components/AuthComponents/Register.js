@@ -31,7 +31,8 @@ class Form extends Component {
 
     // send new record to api
     try {
-      let data = await axios.post('http://192.168.254.5:5000/api/auth/register', newRecord)
+      let endpoint = '/auth/register'
+      let data = await axios.post(endpoint, newRecord)
       this.setState({ status: data.status })
     }
     catch (err) {

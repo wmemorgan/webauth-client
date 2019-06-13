@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:dev": "REACT_APP_API_ENDPOINT='http://192.168.254.5:5000' yarn start",
+    "dev": "REACT_APP_API_ENDPOINT='http://10.6.9.218:5000' yarn start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

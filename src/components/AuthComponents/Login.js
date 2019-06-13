@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios' /** External API calls only **/
 //import { connect } from 'react-redux' /** Redux only **/
-import { FormContainer } from './FormStyles'
+import { FormContainer } from '../SharedComponents/FormStyles'
 import Button from '../DesignComponents/Button'
 
 //import {  } from '../../actions' /** Redux only **/
-
-const API_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}`
 
 class Form extends Component {
   _isMounted = false;
@@ -35,7 +33,8 @@ class Form extends Component {
 
     // send new record to api
     try {
-      let data = await axios.post(`${API_ENDPOINT}/api/auth/login`, credentials, { withCredentials: true })
+      let endpoint = '/auth/login'
+      let data = await axios.post(endpoint, credentials, { withCredentials: true })
       console.log(`Successful login: `, data.headers)
       this.setState({ 
         status: data.status,
