@@ -1,6 +1,9 @@
 import React from 'react'
 // import { Link } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
+
+import requiresAuth from '../AuthComponents/requiresAuth'
+
 import * as S from './UserStyles'
 
 const UserList = props => {
@@ -27,4 +30,4 @@ const UserList = props => {
   )
 }
 
-export default UserList
+export default requiresAuth(UserList)
