@@ -45,7 +45,7 @@ export const FormContainer = styled.div`
 
     input {
       width: 100%;
-      padding: 2px 10px;
+      padding: 5px 10px;
       border: 1px solid ${color.defaultBorderColor};
       border-radius: 5px;
       background: ${color.primaryBgShading};
@@ -53,7 +53,10 @@ export const FormContainer = styled.div`
     }
 
     button {
-      width: 150px;
+      width: 130px;
+      font-size: ${fontSizing.xs};
+      letter-spacing: 0.25rem;
+      text-transform: uppercase;
       color: ${color.lightText};
       background: ${color.primaryColor};
     }
