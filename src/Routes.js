@@ -6,6 +6,7 @@ import { EventEmitter } from './utils/events'
 import Login from './components/AuthComponents/Login'
 import Register from './components/AuthComponents/Register'
 import UserList from './components/UserComponents/UserList'
+import User from './components/UserComponents/User'
 
 class Routes extends Component { 
   constructor(props) {
@@ -61,9 +62,18 @@ class Routes extends Component {
           render={() => localStorage.getItem('jwt') ? <Redirect to={{ pathname: '/users', state: {...this.state} }}/> : <Redirect to='/signin'/>}
         />
         <Route 
-          path='/users'
+          exact path='/users'
           render={props => <UserList {...props} {...this.state} />}
         />
+        {this.state.userList.map(user => (
+          <Route 
+           key={user.id}
+           path={`/users/${user.id}`}
+           render={props => 
+            <User {...props} {...this.state} user={user} />
+          }
+          />
+        ))}
       </>
     )
   }
