@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import axios from 'axios'
 
-import requiresAuth from './components/AuthComponents/requiresAuth'
 import Login from './components/AuthComponents/Login'
 import Register from './components/AuthComponents/Register'
 import UserList from './components/UserComponents/UserList'
@@ -53,4 +52,4 @@ class Routes extends Component {
   }
 }
 
-export default withRouter(requiresAuth(Routes))
+export default withRouter(Routes)
