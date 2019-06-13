@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios' /** External API calls only **/
 //import { connect } from 'react-redux' /** Redux only **/
-import { FormContainer } from '../SharedComponents/FormStyles'
+import * as S from '../SharedComponents/FormStyles'
 import Button from '../DesignComponents/Button'
 
 //import {  } from '../../actions' /** Redux only **/
 
 class Form extends Component {
-  _isMounted = false;
   state = {
     id: '',
     username: '',
@@ -34,8 +33,8 @@ class Form extends Component {
     // send new record to api
     try {
       let endpoint = '/auth/login'
-      let data = await axios.post(endpoint, credentials, { withCredentials: true })
-      console.log(`Successful login: `, data.headers)
+      let data = await axios.post(endpoint, credentials)
+      localStorage.setItem('jwt', data.data.token)
       this.setState({ 
         status: data.status,
         greeting: data.data.message,
@@ -64,70 +63,9 @@ class Form extends Component {
     
   }
 
-  updateData = async e => {
-    // prevent default
-    e.preventDefault()
-    // gather form data
-    let updatedRecord = {
-      id: this.state.id,
-      username: this.state.username,
-      password: this.state.password
-    }
-
-    try {
-      let data = await axios.put(`http://192.168.254.5:5000/api/users/${this.state.id}`, updatedRecord)
-      console.log(`Form submitted data sent: ${JSON.stringify(updatedRecord)}`)
-      this.setState({ status: data.status })
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({
-        status: err.status,
-        errorMessage: err.response.data.message
-      })
-    }
-    //this.props.history.push(`/somelist/${this.state.id}`) /** React-Router only **/
-
-    console.log(`Form submitted data sent: ${JSON.stringify(this.state)}`)
-
-    // reset form fields
-    this.setState({
-      id: '',
-      username: '',
-      password: '',
-
-    })
-  }
-
-  deleteData = async e => {
-    // prevent default
-    e.preventDefault()
-    // invoke the deleteFriend method and pass id
-    try {
-      let data = await axios.delete(`http://192.168.254.5:5000/api/users/${this.state.id}`)
-      this.setState({ status: data.status })
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({
-        status: err.status,
-        errorMessage: err.response.data.message
-      })
-    }
-    //this.props.history.push('/') /** React-Router only **/
-    // reset form field
-    this.setState({ id: '' })
-  }
-
   submitHandler = e => {
     e.preventDefault()
-    if (this.props.update) {
-      this.updateRecord(e)
-    } else if (this.props.delete) {
-      this.deleteData(e)
-    } else {
-      this.addData(e)
-    }
+    this.addData(e)
   }
 
   // componentDidMount() {
@@ -138,7 +76,7 @@ class Form extends Component {
 
   render() {
     return (
-      <FormContainer {...this.props}>
+      <S.FormContainer {...this.props}>
         <div className="windowFrame"></div>
         <form onSubmit={this.submitHandler}>
           {(this.props.update || this.props.delete) &&
@@ -168,7 +106,7 @@ class Form extends Component {
           </Button>
         </form>
         {this.state.errorMessage ? this.state.errorMessage : ''}
-      </FormContainer>
+      </S.FormContainer>
     )
   }
 
