@@ -20,10 +20,11 @@ class Routes extends Component {
     try {
       let endpoint = '/users'
       let data = await axios.get(endpoint)
+      console.log(`getData`, data)
       this.setState({
         status: data.status,
         userList: data.data
-      })
+      }, () => console.log(this.state.status))
     }
     catch (err) {
       console.error(err.response)
@@ -35,7 +36,10 @@ class Routes extends Component {
   }
 
   componentDidMount() {
-    this.getData()
+    const token = localStorage.getItem('jwt')
+    if (token && this.state.userList.length === 0) {
+      this.getData()
+    }
   }
 
   render() {
@@ -45,6 +49,10 @@ class Routes extends Component {
         <Route path='/signup' component={Register} />
         <Route 
           exact path='/'
+          render={props => <UserList {...props} {...this.state} />}
+        />
+        <Route 
+          path='/users'
           render={props => <UserList {...props} {...this.state} />}
         />
       </>
