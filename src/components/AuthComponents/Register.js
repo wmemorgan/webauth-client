@@ -93,16 +93,19 @@ class Form extends Component {
               <input id="username" type="text"
                 placeholder="Username" onChange={this.handleInput}
                 value={this.state.username}
+                required
               />
               <label htmlFor="password" />
               <input id="password" type="password"
                 placeholder="Password" onChange={this.handleInput}
                 value={this.state.password}
+                required
               />
               <label htmlFor="department" />
               <input id="department" type="text"
                 placeholder="Department" onChange={this.handleInput}
                 value={this.state.department}
+                required
               />
             </main>
           )}

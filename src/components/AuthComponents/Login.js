@@ -91,10 +91,12 @@ class Form extends Component {
               <input name="username" type="text"
                 placeholder="Username" onChange={this.handleInput}
                 value={this.state.username}
+                required
               />
               <input name="password" type="password"
                 placeholder="Password" onChange={this.handleInput}
                 value={this.state.password}
+                required
               />
             </>
           )}
