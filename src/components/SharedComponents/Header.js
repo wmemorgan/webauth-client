@@ -41,11 +41,11 @@ class Header extends Component {
 					<S.CrudNav>
 						{!token ? (
 							<NavLink to="/login" onClick={this.toggleDisplay}>
-								Sign In
+								Login
 							</NavLink>
 						) : (
 							<div className="logout" onClick={this.logout}>
-								Log Out
+								Logout
 							</div>
 						)}
 						<NavLink to="/signup" onClick={this.toggleDisplay}>
