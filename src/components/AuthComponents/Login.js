@@ -59,9 +59,9 @@ class Form extends Component {
 			password: "",
     });
     
-    if (this.state.status === 200) {
-      EventEmitter.dispatch("getData");
-      this.props.history.push("/profile");
+    if (this.state.status === 200) {	
+		EventEmitter.dispatch("getData");
+      	this.props.history.push("/");
     } else {
       console.log(`errorMessage: `, this.state.errorMessage);
     }
