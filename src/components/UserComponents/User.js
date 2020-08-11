@@ -30,7 +30,7 @@ class User extends Component {
 			lastname,
       primaryemail,
       roles
-		});
+		}, () => this.verifyAdmin());
   }
 
   inputChangeHandler = e => {
@@ -69,7 +69,7 @@ class User extends Component {
         lastname,
         primaryemail,
         roles,
-      });
+      }, () => this.verifyAdmin());
     } catch (err) {
         console.error(err.response);
         this.setState({
@@ -152,12 +152,24 @@ class User extends Component {
     }
   }
 
+  verifyAdmin = () => {
+    console.log(`this.state.roles, `, this.state.roles);
+    if (this.state.roles.length > 0 &&
+      this.state.roles.find(role => role.role.name.toUpperCase() === 'ADMIN')) {
+      localStorage.setItem("isAdmin", true);
+    }
+
+    EventEmitter.dispatch("updateMenu");
+  }
+
   componentDidMount() {
     if (this.props.user) {
       this.prePopulateForm();
     } else {
       this.getUser();
     }
+
+    //EventEmitter.dispatch("updateMenu");
   }
 
   render() {
