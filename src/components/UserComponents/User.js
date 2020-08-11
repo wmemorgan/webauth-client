@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { EventEmitter } from '../../utils/events'
-import requiresAuth from '../AuthComponents/requiresAuth';
 
 import * as S from './UserStyles'
 import Button from '../DesignComponents/Button'
@@ -11,7 +10,7 @@ class User extends Component {
     super(props)
     this.state = {
 			edit: false,
-			id: props.user.userid || null,
+			id: null,
 			username: "",
 			firstname: "",
 			lastname: "",
@@ -23,8 +22,9 @@ class User extends Component {
   }
 
   prePopulateForm = () => {
-    const { username, firstname, lastname, primaryemail, roles } = this.props.user
+    const { username, firstname, lastname, primaryemail, roles, userid } = this.props.user
     this.setState({
+      id : userid,
 			username,
 			firstname,
 			lastname,
@@ -44,6 +44,39 @@ class User extends Component {
       () => this.prePopulateForm()
     )
 
+  }
+
+  getUser = async () => {
+    try {
+      // Retrieve user profile
+      const endpoint = "/users/user/profile";
+      const data = await axios.get(endpoint);
+      console.log(`GET USER DATA `, data);
+      // Populate locale state
+      const {
+        username,
+        firstname,
+        lastname,
+        primaryemail,
+        roles,
+        userid,
+      } = data.data;
+
+      this.setState({
+        id: userid,
+        username,
+        firstname,
+        lastname,
+        primaryemail,
+        roles,
+      });
+    } catch (err) {
+        console.error(err.response);
+        this.setState({
+          status: err.status,
+          errorMessage: err.response.data.error,
+        });
+    }
   }
 
   updateUser = async () => {
@@ -84,9 +117,9 @@ class User extends Component {
     catch (err) {
       console.error(err.response)
       this.setState({
-        status: err.status,
-        errorMessage: err.response.data.message
-      })
+				status: err.status,
+				errorMessage: err.response.data.error
+			});
     }
 
     console.log(`Form submitted data sent: ${JSON.stringify(updatedData)}`)
@@ -113,17 +146,18 @@ class User extends Component {
     catch (err) {
       console.error(err.response)
       this.setState({
-        status: err.status,
-        errorMessage: err.response.data.message
-      })
+				status: err.status,
+				errorMessage: err.response.data.error
+			});
     }
   }
 
   componentDidMount() {
-    // console.log(`USER CDM: `, this.props.user)
-    // this.setState({
-    //   id: this.props.userid
-    // })
+    if (this.props.user) {
+      this.prePopulateForm();
+    } else {
+      this.getUser();
+    }
   }
 
   render() {
@@ -134,7 +168,7 @@ class User extends Component {
 			lastname,
       primaryemail,
       roles
-		} = this.props.user;
+		} = this.state;
     return (
 			<>
 				<S.UserInfoContainer>
@@ -202,8 +236,10 @@ class User extends Component {
 						<div className="user-stats">
 							<div className="stat-category">Roles:</div>
 							<div className="list-stats">
-								{roles.map((role) => (
-									<div className="list-item" key={role.role.roleid}>{role.role.name}</div>
+								{roles.length > 0 && roles.map((role) => (
+									<div className="list-item" key={role.role.roleid}>
+										{role.role.name}
+									</div>
 								))}
 							</div>
 						</div>
@@ -211,11 +247,16 @@ class User extends Component {
 							<Button update>Update</Button>
 						</S.ButtonMenu>
 					</div>
+					{this.state.errorMessage !== null ? (
+						<p>{this.state.errorMessage}</p>
+					) : (
+						""
+					)}
 				</S.UserInfoContainer>
 			</>
 		);
   }
 }
 
-export default requiresAuth(User);
+export default User;
 
