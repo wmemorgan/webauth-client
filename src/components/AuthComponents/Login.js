@@ -13,7 +13,6 @@ class Form extends Component {
 		username: "",
 		password: "",
 		status: null,
-		greeting: "",
 		errorMesage: null,
 	};
 
@@ -41,9 +40,7 @@ class Form extends Component {
       console.log(`LOGIN SUCCESS `, data);
       localStorage.setItem("token", data.data.access_token);
       this.setState({
-        status: data.status,
-        greeting: data.data.message,
-        errorMessage: "",
+        status: data.status
       });
     } catch (err) {
       console.log(`LOGIN FAILURE `, err.response);
