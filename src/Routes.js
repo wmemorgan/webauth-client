@@ -4,7 +4,7 @@ import axios from "axios";
 import { EventEmitter } from "./utils/events";
 
 import Login from "./components/AuthComponents/Login";
-import Register from "./components/AuthComponents/Register";
+import Signup from "./components/AuthComponents/Signup";
 import UserList from "./components/UserComponents/UserList";
 import User from "./components/UserComponents/User";
 
@@ -60,7 +60,7 @@ class Routes extends Component {
 		return (
 			<>
 				<Route path="/login" component={Login} />
-				<Route path="/signup" component={Register} />
+				<Route path="/signup" component={Signup} />
 				<Route
 					exact
 					path="/"
