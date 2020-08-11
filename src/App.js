@@ -7,6 +7,9 @@ import Routes from './Routes'
 
 axios.defaults.baseURL = `${process.env.REACT_APP_API_ENDPOINT}`
 
+/**
+ * Main function to start the application
+ */
 const App = () => {
   return (
     <AppContainer>

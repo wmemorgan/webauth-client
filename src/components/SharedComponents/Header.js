@@ -6,32 +6,43 @@ import * as S from "./HeaderStyles";
 import MobileMenuIcon from "../DesignComponents/MobileMenuIcon";
 import CloseIconMobile from "../DesignComponents/CloseIconMobile";
 
+/**
+ * Application header and navigation menu
+ */
 class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			show: false,
 			isAuthenticated: false,
-			isAdmin: false
+			isAdmin: false,
 		};
 		EventEmitter.subscribe("updateMenu", (event) => this.updateMenu(event));
 	}
 
 	logout = () => {
 		localStorage.clear();
-		this.setState({
-			isAuthenticated: false,
-			isAdmin: false
-		}, () => this.props.history.push("/login"));
+		this.setState(
+			{
+				isAuthenticated: false,
+				isAdmin: false,
+			},
+			() => this.props.history.push("/login")
+		);
 	};
 
-	// Open and close specific navigation elements
+	/**
+	 * Open and close specific navigation elements
+	 */
 	toggleDisplay = () => {
 		this.setState((prevState) => ({
 			show: !prevState.show,
 		}));
 	};
 
+	/**
+	 * Update navigation menu based on auth
+	 */
 	updateMenu = () => {
 		if (localStorage.getItem("token")) {
 			this.setState({ isAuthenticated: true });
@@ -40,7 +51,7 @@ class Header extends Component {
 		if (localStorage.getItem("isAdmin")) {
 			this.setState({ isAdmin: localStorage.getItem("isAdmin") });
 		}
-	}
+	};
 
 	render() {
 		return (

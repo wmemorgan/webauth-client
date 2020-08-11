@@ -9,6 +9,9 @@ import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import UserList from "./components/UserComponents/UserList";
 import User from "./components/UserComponents/User";
 
+/**
+ * Define all application routes
+ */
 class Routes extends Component {
 	constructor(props) {
 		super(props);
@@ -20,6 +23,9 @@ class Routes extends Component {
 		EventEmitter.subscribe("getData", (event) => this.getDataHandler(event));
 	}
 
+	/**
+	 * Retrieve all users from API
+	 */
 	getData = async () => {
 		try {
 			const endpoint = "/users/users";

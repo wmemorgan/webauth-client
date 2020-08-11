@@ -1,6 +1,11 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-
+/**
+ * High Order Component that limits rendering of a
+ * passed Component based on auth access
+ * 
+ * @param Component
+ */
 const ProtectedRoute = ({ component: Component, ...rest }) => (
 	<Route
 		{...rest}

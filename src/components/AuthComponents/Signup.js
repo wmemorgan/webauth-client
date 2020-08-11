@@ -7,21 +7,37 @@ import * as S from "../SharedComponents/FormStyles";
 import Button from "../DesignComponents/Button";
 
 //import {  } from '../../actions' /** Redux only **/
-
+/**
+ * User Signup Form
+ */
 class Form extends Component {
 	state = {
-		username: '',
-		firstname: '',
-		lastname: '',
-		primaryemail: '',
+		username: "",
+		firstname: "",
+		lastname: "",
+		primaryemail: "",
 		password: "",
 		status: null,
 		errorMesage: "",
 	};
 
+	/**
+	 * Populate form entries to state
+	 * @param {*} e
+	 */
 	handleInput = (e) => {
 		this.setState({ [e.target.id]: e.target.value });
 	};
+
+	resetForm() {
+		this.setState({
+			username: "",
+			firstname: "",
+			lastname: "",
+			primaryemail: "",
+			password: "",
+		});
+	}
 
 	addData = async (e) => {
 		// prevent default
@@ -33,7 +49,7 @@ class Form extends Component {
 			firstname: this.state.firstname,
 			lastname: this.state.lastname,
 			primaryemail: this.state.primaryemail,
-			password: this.state.password
+			password: this.state.password,
 		};
 
 		// send new record to api
@@ -52,24 +68,16 @@ class Form extends Component {
 				errorMessage: err.response.data.error,
 			});
 		}
+		
+		this.resetForm();
 
-		// reset form fields
-		this.setState({
-			username: "",
-			firstname: "",
-			lastname: "",
-			primaryemail: "",
-			password: "",
-		});
-
-		// EventEmitter.dispatch("getData");
 		// this.props.history.push("/users"); /** React-Router only **/
 	};
 
 	submitHandler = (e) => {
 		e.preventDefault();
 		if (this.props.update) {
-			this.updateRecord(e);
+			this.updateData(e);
 		} else if (this.props.delete) {
 			this.deleteData(e);
 		} else {

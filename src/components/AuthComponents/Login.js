@@ -6,6 +6,9 @@ import Button from "../DesignComponents/Button";
 
 //import {  } from '../../actions' /** Redux only **/
 
+/**
+ * User Login form
+ */
 class Form extends Component {
 	state = {
 		id: "",
@@ -15,63 +18,74 @@ class Form extends Component {
 		errorMesage: null,
 	};
 
+	/**
+	 * Populate form entries to state
+	 * @param {*} e 
+	 */
 	handleInput = (e) => {
 		this.setState({ [e.target.name]: e.target.value });
 	};
 
-	addData = async () => {
-		// send new record to api
-    try {
-      // gather form data
-      const credentials = `grant_type=password&username=${this.state.username}&password=${this.state.password}`;
-      const endpoint = "/login";
-      const clientId = process.env.REACT_APP_OAUTHCLIENTID;
-      const clientSecret = process.env.REACT_APP_OAUTHCLIENTSECRET;
-      const headers = {
-        headers: {
-          // btoa is converting our client id/client secret into base64
-          Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      };
-      // send login data to auth API
-      const data = await axios.post(endpoint, credentials, headers);
-      console.log(`LOGIN SUCCESS `, data);
-      localStorage.setItem("token", data.data.access_token);
-      this.setState({
-        status: data.status
-      });
-    } catch (err) {
-      console.log(`LOGIN FAILURE `, err.response);
-      console.error(err.response);
-      this.setState({
-        status: err.status,
-        errorMessage: err.response.status === 400 ?
-          "Invalid username or password" :
-          err.response.data.error_description
-      });
-    }
-
+	resetForm() {
 		// reset form fields
 		this.setState({
 			username: "",
 			password: "",
-    });
-    
-    if (this.state.status === 200) {	
-      	this.props.history.push("/");
-    } else {
-      console.log(`errorMessage: `, this.state.errorMessage);
-    }
+		});
+	}
 
+	redirectAfterLogin () {
+		if (this.state.status === 200) {
+			this.props.history.push("/");
+		} else {
+			console.log(`errorMessage: `, this.state.errorMessage);
+		}
+	}
+
+	login = async () => {
+		// send new record to api
+		try {
+			// gather form data
+			const credentials = `grant_type=password&username=${this.state.username}&password=${this.state.password}`;
+			const endpoint = "/login";
+			const clientId = process.env.REACT_APP_OAUTHCLIENTID;
+			const clientSecret = process.env.REACT_APP_OAUTHCLIENTSECRET;
+			const headers = {
+				headers: {
+				// btoa is converting our client id/client secret into base64
+				Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+				},
+			};
+			// send login data to auth API
+			const data = await axios.post(endpoint, credentials, headers);
+			console.log(`LOGIN SUCCESS `, data);
+			localStorage.setItem("token", data.data.access_token);
+			this.setState({
+				status: data.status
+			});
+		} catch (err) {
+			console.log(`LOGIN FAILURE `, err.response);
+			console.error(err.response);
+			this.setState({
+				status: err.status,
+				errorMessage: err.response.status === 400 ?
+				"Invalid username or password" :
+				err.response.data.error_description
+			});
+		}
+		
+		this.resetForm()
+		this.redirectAfterLogin();
 	};
 
-	// pre-populate form with existing data
-	prePopulateForm = () => {};
-
+	/**
+	 * Form Handler
+	 * @param {*} e 
+	 */
 	submitHandler = (e) => {
 		e.preventDefault();
-		this.addData();
+		this.login();
 	};
 
 	render() {
@@ -110,10 +124,9 @@ class Form extends Component {
 					)}
 					<Button type="submit" {...this.props}>
 						{`${this.props.add ? "Add" : ""} 
-              ${this.props.update ? "Update" : ""}  
-              ${this.props.delete ? "Delete" : ""}   
-              Login
-            `}
+						${this.props.update ? "Update" : ""}  
+						${this.props.delete ? "Delete" : ""}   
+						Login`}
 					</Button>
 				</form>
 				{this.state.errorMessage !== null ? <p>{this.state.errorMessage}</p> : ""}

@@ -5,7 +5,12 @@ import Loader from 'react-loader-spinner'
 import requiresAuth from '../AuthComponents/requiresAuth'
 
 import * as S from './UserStyles'
-
+/**
+ * Component used to display all the users in the API
+ * and to populate dynamic routes based on individual user info
+ * 
+ * @param {C} props 
+ */
 const UserList = props => {
   console.log(`USERLIST: `, props);
   return (
