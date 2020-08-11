@@ -40,17 +40,24 @@ class Header extends Component {
 					</NavLink>
 					<S.CrudNav>
 						{!token ? (
-							<NavLink to="/login" onClick={this.toggleDisplay}>
-								Login
-							</NavLink>
+							<>
+								<NavLink to="/login" onClick={this.toggleDisplay}>
+									Login
+								</NavLink>
+								<NavLink to="/signup" onClick={this.toggleDisplay}>
+									Sign Up
+								</NavLink>
+							</>
 						) : (
-							<div className="logout" onClick={this.logout}>
-								Logout
-							</div>
+							<>
+								<NavLink to="/users" onClick={this.toggleDisplay}>
+									Users
+								</NavLink>
+								<div className="logout" onClick={this.logout}>
+									Logout
+								</div>
+							</>
 						)}
-						<NavLink to="/signup" onClick={this.toggleDisplay}>
-							Sign Up
-						</NavLink>
 					</S.CrudNav>
 				</S.Nav>
 			</S.HeaderContainer>
