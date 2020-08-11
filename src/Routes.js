@@ -21,9 +21,9 @@ class Routes extends Component {
 
 	getData = async () => {
 		try {
-			let endpoint = "/users";
-			let data = await axios.get(endpoint);
-			console.log(`getData`, data);
+			const endpoint = "/users/users";
+			const data = await axios.get(endpoint);
+			console.log(`GETDATA: `, data);
 			this.setState(
 				{
 					status: data.status,
@@ -41,7 +41,7 @@ class Routes extends Component {
 	};
 
 	getDataHandler = () => {
-		const token = localStorage.getItem("jwt");
+		const token = localStorage.getItem("token");
 		console.log(`Is there a token: `, token);
 		if (token) {
 			this.getData();
@@ -49,6 +49,8 @@ class Routes extends Component {
 	};
 
 	componentDidMount() {
+		console.log(`CDM: `, this.state.userList);
+
 		if (this.state.userList.length === 0) {
 			this.getDataHandler();
 		}
@@ -63,7 +65,7 @@ class Routes extends Component {
 					exact
 					path="/"
 					render={() =>
-						localStorage.getItem("jwt") ? (
+						localStorage.getItem("token") ? (
 							<Redirect to={{ pathname: "/users", state: { ...this.state } }} />
 						) : (
 							<Redirect to="/login" />
@@ -77,8 +79,8 @@ class Routes extends Component {
 				/>
 				{this.state.userList.map((user) => (
 					<Route
-						key={user.id}
-						path={`/users/${user.id}`}
+						key={user.userid}
+						path={`/users/${user.userid}`}
 						render={(props) => <User {...props} {...this.state} user={user} />}
 					/>
 				))}
