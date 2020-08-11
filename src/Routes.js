@@ -5,6 +5,7 @@ import { EventEmitter } from "./utils/events";
 
 import Login from "./components/AuthComponents/Login";
 import Signup from "./components/AuthComponents/Signup";
+import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import UserList from "./components/UserComponents/UserList";
 import User from "./components/UserComponents/User";
 
@@ -50,7 +51,6 @@ class Routes extends Component {
 
 	componentDidMount() {
 		console.log(`CDM: `, this.state.userList);
-
 		if (this.state.userList.length === 0) {
 			this.getDataHandler();
 		}
@@ -59,19 +59,20 @@ class Routes extends Component {
 	render() {
 		return (
 			<>
-				<Route path="/login" component={Login} />
-				<Route path="/signup" component={Signup} />
 				<Route
 					exact
 					path="/"
 					render={() =>
 						localStorage.getItem("token") ? (
-							<Redirect to={{ pathname: "/users", state: { ...this.state } }} />
+							<Redirect to={{ pathname: "/profile", state: { ...this.state } }} />
 						) : (
 							<Redirect to="/login" />
 						)
 					}
 				/>
+				<Route path="/login" component={Login} />
+				<Route path="/signup" component={Signup} />
+				<ProtectedRoute path="/profile" component={User} />
 				<Route
 					exact
 					path="/users"

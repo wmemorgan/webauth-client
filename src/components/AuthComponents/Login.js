@@ -61,7 +61,7 @@ class Form extends Component {
     
     if (this.state.status === 200) {
       EventEmitter.dispatch("getData");
-      this.props.history.push("/users");
+      this.props.history.push("/profile");
     } else {
       console.log(`errorMessage: `, this.state.errorMessage);
     }
