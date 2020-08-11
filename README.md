@@ -3,8 +3,12 @@
 
 An application to test and showcase user authorization and authentication features for different API technologies.
 
+<p align="center"> 
+    <img src="https://github.com/wmemorgan/webauth-client/blob/auth-java/public/assets/webauth-client.png">
+</p>
+
 ## Live Site
-[Demo Site](https://auth-java--webauth-client.netlify.app/)
+[Demo Site (Java Backend)](https://auth-java--webauth-client.netlify.app/)
 
 ## Features
 - OAuth 2 token based authentication
