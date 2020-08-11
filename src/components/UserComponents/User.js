@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { EventEmitter } from '../../utils/events'
+import requiresAuth from '../AuthComponents/requiresAuth';
 
 import * as S from './UserStyles'
 import Button from '../DesignComponents/Button'
@@ -127,7 +128,7 @@ class User extends Component {
 
   render() {
     const {
-			id,
+			userid,
 			username,
 			firstname,
 			lastname,
@@ -141,7 +142,7 @@ class User extends Component {
 						<i className="far fa-edit" onClick={() => this.toggleEdit()}></i>
 						<i
 							className="fa fa-trash"
-							onClick={() => this.props.deleteUser(id)}
+							onClick={() => this.deleteUser(userid)}
 						></i>
 					</header>
 					<div className="user-info">
@@ -216,5 +217,5 @@ class User extends Component {
   }
 }
 
-export default User;
+export default requiresAuth(User);
 
