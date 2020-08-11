@@ -3,6 +3,7 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 import axios from "axios";
 import { EventEmitter } from "./utils/events";
 
+import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import Login from "./components/AuthComponents/Login";
 import Register from "./components/AuthComponents/Register";
 import UserList from "./components/UserComponents/UserList";
@@ -72,7 +73,7 @@ class Routes extends Component {
 						)
 					}
 				/>
-				<Route
+				<ProtectedRoute
 					exact
 					path="/users"
 					render={(props) => <UserList {...props} {...this.state} />}
