@@ -157,6 +157,7 @@ class User extends Component {
     if (this.state.roles.length > 0 &&
       this.state.roles.find(role => role.role.name.toUpperCase() === 'ADMIN')) {
       localStorage.setItem("isAdmin", true);
+      EventEmitter.dispatch("getData");
     }
 
     EventEmitter.dispatch("updateMenu");
