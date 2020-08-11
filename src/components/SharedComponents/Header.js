@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink, withRouter } from "react-router-dom";
+import { EventEmitter } from "../../utils/events";
 
 import * as S from "./HeaderStyles";
 import MobileMenuIcon from "../DesignComponents/MobileMenuIcon";
@@ -8,12 +9,20 @@ import CloseIconMobile from "../DesignComponents/CloseIconMobile";
 class Header extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { show: false };
+		this.state = {
+			show: false,
+			isAuthenticated: false,
+			isAdmin: false
+		};
+		EventEmitter.subscribe("updateMenu", (event) => this.updateMenu(event));
 	}
 
 	logout = () => {
 		localStorage.clear();
-		this.props.history.push("/login");
+		this.setState({
+			isAuthenticated: false,
+			isAdmin: false
+		}, () => this.props.history.push("/login"));
 	};
 
 	// Open and close specific navigation elements
@@ -23,9 +32,17 @@ class Header extends Component {
 		}));
 	};
 
-	render() {
-		const token = localStorage.getItem("token");
+	updateMenu = () => {
+		if (localStorage.getItem("token")) {
+			this.setState({ isAuthenticated: true });
+		}
 
+		if (localStorage.getItem("isAdmin")) {
+			this.setState({ isAdmin: localStorage.getItem("isAdmin") });
+		}
+	}
+
+	render() {
 		return (
 			<S.HeaderContainer>
 				<MobileMenuIcon {...this.state} onClick={this.toggleDisplay}>
@@ -39,7 +56,7 @@ class Header extends Component {
 						Home
 					</NavLink>
 					<S.CrudNav>
-						{!token ? (
+						{this.state.isAuthenticated === false ? (
 							<>
 								<NavLink to="/login" onClick={this.toggleDisplay}>
 									Login
@@ -50,9 +67,11 @@ class Header extends Component {
 							</>
 						) : (
 							<>
-								<NavLink to="/users" onClick={this.toggleDisplay}>
-									Users
-								</NavLink>
+								{this.state.isAdmin && (
+									<NavLink to="/users" onClick={this.toggleDisplay}>
+										Users
+									</NavLink>
+								)}
 								<div className="logout" onClick={this.logout}>
 									Logout
 								</div>
