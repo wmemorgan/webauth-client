@@ -9,13 +9,13 @@ class User extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      edit: false,
-      id: null,
+			edit: false,
+			id: props.user.userid || null,
 			username: "",
 			firstname: "",
 			lastname: "",
-      primaryemail: "",
-      roles: "",
+			primaryemail: "",
+			roles: "",
 			status: null,
 			errorMesage: "",
 		};
@@ -47,12 +47,15 @@ class User extends Component {
 
   updateUser = async () => {
     // gather updated data
-    let updatedData = {
+    const updatedData = {
       username: this.state.username,
-      department: this.state.department
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      primaryemail: this.state.primaryemail,
+      roles: this.state.roles
     }
     // send updated record to api
-    // let endpoint = '/user'
+    // const endpoint = '/user'
     // axios.put(`${endpoint}/${this.state.id}`, updatedData)
     //   .then(response => {
     //     this.props.updateList(response.data)
@@ -61,15 +64,18 @@ class User extends Component {
     //   .catch(err => console.log(err))
 
     try {
-      let endpoint = '/users/user'
-      let data = await axios.patch(`${endpoint}/${this.state.id}`, updatedData)
+      console.log(`USER ID: `, this.props.user);
+      const endpoint = '/users/user'
+      const data = await axios.patch(`${endpoint}/${this.state.id}`, updatedData)
       if (data) {
         this.toggleEdit()
         // reset form fields
         this.setState({
-          id: this.props.user.id,
+          id: this.props.user.userid,
           username: '',
-          department: ''
+          firstname: '',
+          lastname: '',
+          primaryemail: ''
         })
         EventEmitter.dispatch('getData')  
       }
@@ -87,15 +93,18 @@ class User extends Component {
 
   deleteUser = async id => {
     try {
-      let endpoint = '/users'
-      let data = await axios.delete(`${endpoint}/${id}`)
+      const endpoint = '/users/user'
+      const data = await axios.delete(`${endpoint}/${id}`)
       if (data) {
         console.log(`${this.state.username} successfully deleted`)
         // reset form fields
         this.setState({
-          username: '',
-          password: ''
-        })
+					username: "",
+					firstname: "",
+					lastname: "",
+          primaryemail: "",
+          roles: ""
+				});
         EventEmitter.dispatch('getData')
         this.props.history.push('/users')
       }
@@ -110,9 +119,10 @@ class User extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      id: this.props.user.id
-    })
+    // console.log(`USER CDM: `, this.props.user)
+    // this.setState({
+    //   id: this.props.userid
+    // })
   }
 
   render() {
