@@ -26,7 +26,7 @@ import { color, colorScheme, fontSizing,
   `
 
 export const UserInfoContainer = styled.div`
-  ${flex('column')};
+  ${flex("column")};
   width: 80%;
   min-width: 300px;
   max-width: 600px;
@@ -37,7 +37,7 @@ export const UserInfoContainer = styled.div`
 
   header {
     width: 100%;
-    ${flex('row', 'center', 'flex-end')};
+    ${flex("row", "center", "flex-end")};
     margin: 0;
     padding: 10px;
     border-radius: 5px 5px 0 0;
@@ -55,13 +55,13 @@ export const UserInfoContainer = styled.div`
   }
 
   .user-info {
-    ${flex('column', 'flex-start', 'center')}
+    ${flex("column", "flex-start", "center")}
     padding: 20px;
 
     h3 {
       margin: 10px 0;
-      font-size: ${fontSizing.ml};
-      letter-spacing: 0.35rem;
+      font-size: ${fontSizing.m};
+      letter-spacing: 0.15rem;
       color: ${colorScheme.headingColor};
     }
 
@@ -76,16 +76,24 @@ export const UserInfoContainer = styled.div`
       grid-gap: 10px;
       
       & * {
-        font-size: ${fontSizing.m};
+        font-size: ${fontSizing.s};
 
         @media ${breakpoints[0]} {
-          font-size: ${fontSizing.sm};
+          font-size: ${fontSizing.xs};
         }
       }
 
       .stat-category {
         font-weight: bolder;
         color: ${color.emphasis};
+      }
+
+      .list-stats {
+        ${flex()};
+      }
+
+      .list-item {
+        margin-right: 1rem;
       }
 
     }
@@ -97,7 +105,7 @@ export const UserInfoContainer = styled.div`
     }
 }
 
-`
+`;
 
   export const Preview = styled.div`
     width: 90%;

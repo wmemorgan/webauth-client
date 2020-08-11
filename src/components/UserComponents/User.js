@@ -9,16 +9,27 @@ class User extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      edit: false
-    }
+      edit: false,
+      id: null,
+			username: "",
+			firstname: "",
+			lastname: "",
+      primaryemail: "",
+      roles: "",
+			status: null,
+			errorMesage: "",
+		};
   }
 
   prePopulateForm = () => {
-    const { username, department } = this.props.user
+    const { username, firstname, lastname, primaryemail, roles } = this.props.user
     this.setState({
-      username,
-      department
-    })
+			username,
+			firstname,
+			lastname,
+      primaryemail,
+      roles
+		});
   }
 
   inputChangeHandler = e => {
@@ -50,8 +61,8 @@ class User extends Component {
     //   .catch(err => console.log(err))
 
     try {
-      let endpoint = '/users'
-      let data = await axios.put(`${endpoint}/${this.state.id}`, updatedData)
+      let endpoint = '/users/user'
+      let data = await axios.patch(`${endpoint}/${this.state.id}`, updatedData)
       if (data) {
         this.toggleEdit()
         // reset form fields
@@ -100,52 +111,98 @@ class User extends Component {
 
   componentDidMount() {
     this.setState({
-      id: this.props.user.id,
-      username: '',
-      department: '',
-      status: null,
-      errorMesage: ''
+      id: this.props.user.id
     })
   }
 
   render() {
-    const { id, username, department} = this.props.user
+    const {
+			id,
+			username,
+			firstname,
+			lastname,
+      primaryemail,
+      roles
+		} = this.props.user;
     return (
-      <>
-        <S.UserInfoContainer>
-          <header>
-            <i className="far fa-edit" onClick={() => this.toggleEdit()}>
-            </i>
-            <i className="fa fa-trash"
-              onClick={() => this.props.deleteUser(id)}>
-            </i>
-          </header>
-          <div className="user-info">
-            {!this.state.edit ?
-              <h3 className="stat-data">{username}</h3> :
-              <input name="username" type="text"
-                placeholder="Username" onChange={this.inputChangeHandler}
-                value={this.state.username}
-              />
-            }
-            <div className="user-stats">
-              <div className="stat-category">Department:</div>
-              {!this.state.edit ?
-                <div className="stat-data">{department}</div> :
-                <input name="department" type="text"
-                  placeholder="Department" onChange={this.inputChangeHandler}
-                  value={this.state.department}
-                />
-              }
-            </div>
-            <S.ButtonMenu {...this.state} onClick={() => this.updateUser()}>
-              <Button update>Update</Button>
-            </S.ButtonMenu>
-
-          </div>
-        </S.UserInfoContainer>
-      </>
-    )
+			<>
+				<S.UserInfoContainer>
+					<header>
+						<i className="far fa-edit" onClick={() => this.toggleEdit()}></i>
+						<i
+							className="fa fa-trash"
+							onClick={() => this.props.deleteUser(id)}
+						></i>
+					</header>
+					<div className="user-info">
+						{!this.state.edit ? (
+							<h3 className="stat-data">{username}</h3>
+						) : (
+							<input
+								name="username"
+								type="text"
+								placeholder="Username"
+								onChange={this.inputChangeHandler}
+								value={this.state.username}
+							/>
+						)}
+						<div className="user-stats">
+							<div className="stat-category">First Name:</div>
+							{!this.state.edit ? (
+								<div className="stat-data">{firstname}</div>
+							) : (
+								<input
+									name="firstname"
+									type="text"
+									placeholder="firstname"
+									onChange={this.inputChangeHandler}
+									value={this.state.firstname}
+								/>
+							)}
+						</div>
+						<div className="user-stats">
+							<div className="stat-category">Last Name:</div>
+							{!this.state.edit ? (
+								<div className="stat-data">{lastname}</div>
+							) : (
+								<input
+									name="lastname"
+									type="text"
+									placeholder="Department"
+									onChange={this.inputChangeHandler}
+									value={this.state.lastname}
+								/>
+							)}
+						</div>
+						<div className="user-stats">
+							<div className="stat-category">Email:</div>
+							{!this.state.edit ? (
+								<div className="stat-data">{primaryemail}</div>
+							) : (
+								<input
+									name="primaryemail"
+									type="text"
+									placeholder="Department"
+									onChange={this.inputChangeHandler}
+									value={this.state.primaryemail}
+								/>
+							)}
+						</div>
+						<div className="user-stats">
+							<div className="stat-category">Roles:</div>
+							<div className="list-stats">
+								{roles.map((role) => (
+									<div className="list-item" key={role.role.roleid}>{role.role.name}</div>
+								))}
+							</div>
+						</div>
+						<S.ButtonMenu {...this.state} onClick={() => this.updateUser()}>
+							<Button update>Update</Button>
+						</S.ButtonMenu>
+					</div>
+				</S.UserInfoContainer>
+			</>
+		);
   }
 }
 
