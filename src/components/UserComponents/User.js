@@ -5,10 +5,14 @@ import { EventEmitter } from '../../utils/events'
 import * as S from './UserStyles'
 import Button from '../DesignComponents/Button'
 
+/**
+ * User Component used for displaying, updating, 
+ * and deleting individual user record
+ */
 class User extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+	constructor(props) {
+		super(props);
+		this.state = {
 			edit: false,
 			id: null,
 			username: "",
@@ -19,170 +23,189 @@ class User extends Component {
 			status: null,
 			errorMesage: "",
 		};
-  }
+	}
 
-  prePopulateForm = () => {
-    const { username, firstname, lastname, primaryemail, roles, userid } = this.props.user
-    this.setState({
-      id : userid,
+	/**
+	 * Populate local state from passed down props
+	 */
+	prePopulateForm = () => {
+		const {
 			username,
 			firstname,
 			lastname,
-      primaryemail,
-      roles
-		}, () => this.verifyAdmin());
+			primaryemail,
+			roles,
+			userid,
+		} = this.props.user;
+		this.setState(
+			{
+				id: userid,
+				username,
+				firstname,
+				lastname,
+				primaryemail,
+				roles,
+			},
+			() => this.verifyAdmin()
+		);
+	};
+
+	/**
+	 * Populate form entries to state
+	 * @param {*} e
+	 */
+	handleInput = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+  };
+  
+  resetForm() {
+    this.setState({
+      username: "",
+      firstname: "",
+      lastname: "",
+      primaryemail: "",
+    });
   }
 
-  inputChangeHandler = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+	toggleEdit() {
+    this.setState(
+      (prevState) => ({ edit: !prevState.edit }),
+      () => this.getUser()
+		);
+	}
 
-  toggleEdit() {
-    this.setState(prevState => (
-      { edit: !prevState.edit }
-    ),
-      () => this.prePopulateForm()
-    )
-
-  }
-
+  /**
+   * Get profile information of authenticated user
+   */
   getUser = async () => {
+    let endpoint;
     try {
-      // Retrieve user profile
-      const endpoint = "/users/user/profile";
-      const data = await axios.get(endpoint);
-      console.log(`GET USER DATA `, data);
-      // Populate locale state
-      const {
-        username,
-        firstname,
-        lastname,
-        primaryemail,
-        roles,
-        userid,
-      } = data.data;
-
-      this.setState({
-        id: userid,
-        username,
-        firstname,
-        lastname,
-        primaryemail,
-        roles,
-      }, () => this.verifyAdmin());
-    } catch (err) {
-        console.error(err.response);
-        this.setState({
-          status: err.status,
-          errorMessage: err.response.data.error,
-        });
-    }
-  }
-
-  updateUser = async () => {
-    // gather updated data
-    const updatedData = {
-      username: this.state.username,
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      primaryemail: this.state.primaryemail,
-      roles: this.state.roles
-    }
-    // send updated record to api
-    // const endpoint = '/user'
-    // axios.put(`${endpoint}/${this.state.id}`, updatedData)
-    //   .then(response => {
-    //     this.props.updateList(response.data)
-    //     this.toggleEdit()
-    //   })
-    //   .catch(err => console.log(err))
-
-    try {
-      console.log(`USER ID: `, this.props.user);
-      const endpoint = '/users/user'
-      const data = await axios.patch(`${endpoint}/${this.state.id}`, updatedData)
-      if (data) {
-        this.toggleEdit()
-        // reset form fields
-        this.setState({
-          id: this.props.user.userid,
-          username: '',
-          firstname: '',
-          lastname: '',
-          primaryemail: ''
-        })
-        EventEmitter.dispatch('getData')  
+      // Retrieve user info (ADMIN access)
+      if (this.state.id && localStorage.getItem("isAdmin")) {
+        endpoint = `/users/user/${this.state.id}`
+      } else {
+        // Retrieve user profile
+        endpoint = `/users/user/profile`;
       }
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({
+
+			const data = await axios.get(endpoint);
+			console.log(`GET USER DATA `, data);
+			// Populate locale state
+			const {
+				username,
+				firstname,
+				lastname,
+				primaryemail,
+				roles,
+				userid,
+			} = data.data;
+
+			this.setState(
+				{
+					id: userid,
+					username,
+					firstname,
+					lastname,
+					primaryemail,
+					roles,
+				},
+				() => this.verifyAdmin()
+			);
+		} catch (err) {
+			console.error(err.response);
+			this.setState({
 				status: err.status,
-				errorMessage: err.response.data.error
+				errorMessage: err.response.data.error,
 			});
-    }
+		}
+	};
 
-    console.log(`Form submitted data sent: ${JSON.stringify(updatedData)}`)
-  }
+	updateUser = async () => {
+		// gather updated data
+		const updatedData = {
+			username: this.state.username,
+			firstname: this.state.firstname,
+			lastname: this.state.lastname,
+			primaryemail: this.state.primaryemail,
+			roles: this.state.roles,
+		};
 
-  deleteUser = async id => {
-    try {
-      const endpoint = '/users/user'
-      const data = await axios.delete(`${endpoint}/${id}`)
-      if (data) {
-        console.log(`${this.state.username} successfully deleted`)
+		try {
+			console.log(`USER ID: `, this.props.user);
+			const endpoint = "/users/user";
+			const data = await axios.patch(
+				`${endpoint}/${this.state.id}`,
+				updatedData
+			);
+			if (data) {
+				this.toggleEdit();
+        this.getUser();
+			}
+		} catch (err) {
+			console.error(err.response);
+			this.setState({
+				status: err.status,
+				errorMessage: err.response.data.error,
+			});
+		}
+
+		console.log(`Form submitted data sent: ${JSON.stringify(updatedData)}`);
+	};
+
+	deleteUser = async (id) => {
+		try {
+			const endpoint = "/users/user";
+			const data = await axios.delete(`${endpoint}/${id}`);
+			if (data) {
+				console.log(`${this.state.username} successfully deleted`);
         // reset form fields
-        this.setState({
-					username: "",
-					firstname: "",
-					lastname: "",
-          primaryemail: "",
-          roles: ""
-				});
-        EventEmitter.dispatch('getData')
-        this.props.history.push('/users')
-      }
-    }
-    catch (err) {
-      console.error(err.response)
-      this.setState({
+        this.resetForm();
+				this.props.history.push("/");
+			}
+		} catch (err) {
+			console.error(err.response);
+			this.setState({
 				status: err.status,
-				errorMessage: err.response.data.error
+				errorMessage: err.response.data.error,
 			});
-    }
-  }
+		}
+	};
 
-  verifyAdmin = () => {
-    console.log(`this.state.roles, `, this.state.roles);
-    if (this.state.roles.length > 0 &&
-      this.state.roles.find(role => role.role.name.toUpperCase() === 'ADMIN')) {
-      localStorage.setItem("isAdmin", true);
-      EventEmitter.dispatch("getData");
-    }
+  /**
+   * Verify authenticated user has ADMIN rights
+   * Retrieve all API user data if current user has access
+   */
+	verifyAdmin = () => {
+		console.log(`this.state.roles, `, this.state.roles);
+		if (
+			this.state.roles.length > 0 &&
+			this.state.roles.find((role) => role.role.name.toUpperCase() === "ADMIN")
+		) {
+			localStorage.setItem("isAdmin", true);
+			EventEmitter.dispatch("getData");
+		}
 
-    EventEmitter.dispatch("updateMenu");
-  }
+		EventEmitter.dispatch("updateMenu");
+	};
 
-  componentDidMount() {
-    if (this.props.user) {
-      this.prePopulateForm();
-    } else {
-      this.getUser();
-    }
+	componentDidMount() {
+		if (this.props.user) {
+			this.prePopulateForm();
+		} else {
+			this.getUser();
+		}
+	}
 
-    //EventEmitter.dispatch("updateMenu");
-  }
-
-  render() {
-    const {
+	render() {
+		const {
 			userid,
 			username,
 			firstname,
 			lastname,
-      primaryemail,
-      roles
+			primaryemail,
+			roles,
 		} = this.state;
-    return (
+		return (
 			<>
 				<S.UserInfoContainer>
 					<header>
@@ -200,7 +223,7 @@ class User extends Component {
 								name="username"
 								type="text"
 								placeholder="Username"
-								onChange={this.inputChangeHandler}
+								onChange={this.handleInput}
 								value={this.state.username}
 							/>
 						)}
@@ -213,7 +236,7 @@ class User extends Component {
 									name="firstname"
 									type="text"
 									placeholder="firstname"
-									onChange={this.inputChangeHandler}
+									onChange={this.handleInput}
 									value={this.state.firstname}
 								/>
 							)}
@@ -227,7 +250,7 @@ class User extends Component {
 									name="lastname"
 									type="text"
 									placeholder="Department"
-									onChange={this.inputChangeHandler}
+									onChange={this.handleInput}
 									value={this.state.lastname}
 								/>
 							)}
@@ -241,7 +264,7 @@ class User extends Component {
 									name="primaryemail"
 									type="text"
 									placeholder="Department"
-									onChange={this.inputChangeHandler}
+									onChange={this.handleInput}
 									value={this.state.primaryemail}
 								/>
 							)}
@@ -249,11 +272,12 @@ class User extends Component {
 						<div className="user-stats">
 							<div className="stat-category">Roles:</div>
 							<div className="list-stats">
-								{roles.length > 0 && roles.map((role) => (
-									<div className="list-item" key={role.role.roleid}>
-										{role.role.name}
-									</div>
-								))}
+								{roles.length > 0 &&
+									roles.map((role) => (
+										<div className="list-item" key={role.role.roleid}>
+											{role.role.name}
+										</div>
+									))}
 							</div>
 						</div>
 						<S.ButtonMenu {...this.state} onClick={() => this.updateUser()}>
@@ -268,7 +292,7 @@ class User extends Component {
 				</S.UserInfoContainer>
 			</>
 		);
-  }
+	}
 }
 
 export default User;
