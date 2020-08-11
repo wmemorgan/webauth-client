@@ -3,6 +3,15 @@
 
 An application to test and showcase user authorization and authentication features for different API technologies.
 
+<p align="center"> 
+    <img src="https://github.com/wmemorgan/webauth-client/blob/auth-java/public/assets/webauth-client.png">
+</p>
+  
+
+## Live Sites
+- [Demo Site (Node.js Backend)](https://webauth-client.netlify.app)
+- [Demo Site (Java Backend)](https://auth-java--webauth-client.netlify.app)
+
 ## Installation
 - Clone this repo to your local machine using `https://github.com/wmemorgan/webauth-client.git`
 
