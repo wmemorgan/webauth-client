@@ -6,3 +6,9 @@
   from = "/"
   to = "/index.html"
 status = 200
+
+# Specific branch context:
+# Deploys from this branch will take these settings
+# and override their current ones.
+[context.auth-java.environment]
+  REACT_APP_API_ENDPOINT="https://wme-rest-api-java.herokuapp.com"
