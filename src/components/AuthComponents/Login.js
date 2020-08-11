@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios"; /** External API calls only **/
 //import { connect } from 'react-redux' /** Redux only **/
-import { EventEmitter } from "../../utils/events";
 import * as S from "../SharedComponents/FormStyles";
 import Button from "../DesignComponents/Button";
 
@@ -48,8 +47,8 @@ class Form extends Component {
       this.setState({
         status: err.status,
         errorMessage: err.response.status === 400 ?
-          err.response.data.error :
-          err.response.data.detail,
+          "Invalid username or password" :
+          err.response.data.error_description
       });
     }
 
@@ -60,7 +59,6 @@ class Form extends Component {
     });
     
     if (this.state.status === 200) {	
-		EventEmitter.dispatch("getData");
       	this.props.history.push("/");
     } else {
       console.log(`errorMessage: `, this.state.errorMessage);
