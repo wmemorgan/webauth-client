@@ -61,5 +61,13 @@ export const FormContainer = styled.div`
       background: ${color.primaryColor};
     }
   }
+
+  button {
+    width: 150px;
+    font-size: ${fontSizing.xs};
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    color: ${color.lightText};
+  }
 `
 export default FormContainer

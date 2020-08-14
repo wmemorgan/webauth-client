@@ -20,7 +20,7 @@ class Form extends Component {
 
 	/**
 	 * Populate form entries to state
-	 * @param {*} e 
+	 * @param {*} e - the event being fired
 	 */
 	handleInput = (e) => {
 		this.setState({ [e.target.name]: e.target.value });
@@ -80,8 +80,20 @@ class Form extends Component {
 	};
 
 	/**
+	 * Auto login using demo account credentials
+	 * @param {*} e - the event being fired
+	 */
+	demoLogin = (e) => {
+		e.preventDefault();
+		this.setState({
+			username: "demo",
+			password: "demo"
+		}, () => this.login())
+	}
+
+	/**
 	 * Form Handler
-	 * @param {*} e 
+	 * @param {*} e - the event being fired
 	 */
 	submitHandler = (e) => {
 		e.preventDefault();
@@ -129,6 +141,9 @@ class Form extends Component {
 						Login`}
 					</Button>
 				</form>
+				<Button onClick={this.demoLogin} update>
+					Demo Login
+				</Button>
 				{this.state.errorMessage !== null ? <p>{this.state.errorMessage}</p> : ""}
 			</S.FormContainer>
 		);
